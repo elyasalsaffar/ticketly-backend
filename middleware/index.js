@@ -20,19 +20,51 @@ const createToken = (payload) => {
   return token
 }
 
+// const stripToken = (req, res, next) => {
+//   try {
+//     const token = req.headers['authorization'].split(' ')[1]
+//     if (token) {
+//       res.locals.token = token
+//       return next()
+//     }
+//     res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
+//   } catch (error) {
+//     console.log(error)
+//     res.status(401).send({ status: 'Error', msg: 'Strip Token Error!' })
+//   }
+// }
+
 const stripToken = (req, res, next) => {
   try {
-    const token = req.headers['authorization'].split(' ')[1]
-    if (token) {
-      res.locals.token = token
-      return next()
+    const authHeader = req.headers['authorization'];
+
+    if (!authHeader) {
+      console.log('Authorization header missing!');
+      return res.status(401).send({ status: 'Error', msg: 'Authorization header missing!' });
     }
-    res.status(401).send({ status: 'Error', msg: 'Unauthorized' })
+
+    const tokenParts = authHeader.split(' ');
+
+    if (tokenParts.length !== 2 || tokenParts[0] !== 'Bearer') {
+      console.log('Invalid Authorization header format!');
+      return res.status(401).send({ status: 'Error', msg: 'Invalid Authorization header format. Expected "Bearer [token]"' });
+    }
+
+    const token = tokenParts[1];
+
+    if (!token) {
+      console.log('Token missing after Bearer prefix!');
+      return res.status(401).send({ status: 'Error', msg: 'Token missing!' });
+    }
+
+    res.locals.token = token;
+    return next();
+
   } catch (error) {
-    console.log(error)
-    res.status(401).send({ status: 'Error', msg: 'Strip Token Error!' })
+    console.error('Strip Token Error:', error); // Use console.error for actual errors
+    res.status(401).send({ status: 'Error', msg: 'An unexpected error occurred while processing the token.' });
   }
-}
+};
 
 const verifyToken = (req, res, next) => {
   const { token } = res.locals
