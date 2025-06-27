@@ -61,7 +61,7 @@ const stripToken = (req, res, next) => {
     return next();
 
   } catch (error) {
-    console.error('Strip Token Error:', error); // Use console.error for actual errors
+    console.error('Strip Token Error:', error);
     res.status(401).send({ status: 'Error', msg: 'An unexpected error occurred while processing the token.' });
   }
 };
