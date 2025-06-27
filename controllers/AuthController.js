@@ -30,7 +30,8 @@ const Login = async (req, res) => {
         id: user.id,
         email: user.email,
         first: user.first,
-        last: user.last
+        last: user.last,
+        phone: user.phone
       }
       let token = middleware.createToken(payload)
       return res.status(200).send({ user: payload, token })
@@ -71,6 +72,39 @@ const UpdatePassword = async (req, res) => {
   }
 }
 
+const UpdateUser = async (req, res) => {
+  try {
+    const { first, last, email, phone, password, profilePicture } = req.body
+    let updatedFields = { first, last, email, phone, profilePicture }
+
+    if (password) {
+      const passwordDigest = await middleware.hashPassword(password)
+      updatedFields.passwordDigest = passwordDigest
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.user_id,
+      updatedFields,
+      { new: true }
+    )
+
+    const payload = {
+      id: updatedUser.id,
+      email: updatedUser.email,
+      first: updatedUser.first,
+      last: updatedUser.last,
+      phone: updatedUser.phone,
+      profilePicture: updatedUser.profilePicture
+    }
+
+    const token = middleware.createToken(payload)
+
+    res.status(200).send({ status: 'Profile updated successfully!', user: payload, token })
+  } catch (error) {
+    res.status(500).send({ status: 'Error', msg: 'Failed to update profile' })
+  }
+}
+
 const CheckSession = async (req, res) => {
   const { payload } = res.locals
   res.status(200).send(payload)
@@ -80,5 +114,6 @@ module.exports = {
   Register,
   Login,
   UpdatePassword,
+  UpdateUser,
   CheckSession
 }

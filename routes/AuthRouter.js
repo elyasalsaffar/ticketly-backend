@@ -16,5 +16,11 @@ router.get(
   middleware.verifyToken,
   controller.CheckSession
 )
+router.put(
+  '/users/:user_id',
+  middleware.stripToken,
+  middleware.verifyToken,
+  controller.UpdateUser
+)
 
 module.exports = router
