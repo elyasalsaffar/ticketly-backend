@@ -32,7 +32,8 @@ const Login = async (req, res) => {
         first: user.first,
         last: user.last,
         phone: user.phone,
-        profilePicture: user.profilePicture
+        profilePicture: user.profilePicture,
+        role: user.role
       }
       let token = middleware.createToken(payload)
       return res.status(200).send({ user: payload, token })
@@ -75,8 +76,8 @@ const UpdatePassword = async (req, res) => {
 
 const UpdateUser = async (req, res) => {
   try {
-    const { first, last, email, phone, password, profilePicture } = req.body
-    let updatedFields = { first, last, email, phone, profilePicture }
+    const { first, last, email, phone, password, profilePicture, role } = req.body
+    let updatedFields = { first, last, email, phone, profilePicture, role }
 
     if (password) {
       const passwordDigest = await middleware.hashPassword(password)
@@ -95,7 +96,8 @@ const UpdateUser = async (req, res) => {
       first: updatedUser.first,
       last: updatedUser.last,
       phone: updatedUser.phone,
-      profilePicture: updatedUser.profilePicture
+      profilePicture: updatedUser.profilePicture,
+      role: updatedUser.role
     }
 
     const token = middleware.createToken(payload)
@@ -103,6 +105,24 @@ const UpdateUser = async (req, res) => {
     res.status(200).send({ status: 'Profile updated successfully!', user: payload, token })
   } catch (error) {
     res.status(500).send({ status: 'Error', msg: 'Failed to update profile' })
+  }
+}
+
+const GetAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}, '-passwordDigest -tickets')
+    res.status(200).send(users)
+  } catch (error) {
+    res.status(500).send({ msg: 'Failed to fetch users' })
+  }
+}
+
+const DeleteUser = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.user_id)
+    res.status(200).send({ msg: 'User deleted' })
+  } catch (error) {
+    res.status(500).send({ msg: 'failed to delete user' })
   }
 }
 
@@ -116,5 +136,7 @@ module.exports = {
   Login,
   UpdatePassword,
   UpdateUser,
+  GetAllUsers,
+  DeleteUser,
   CheckSession
 }
