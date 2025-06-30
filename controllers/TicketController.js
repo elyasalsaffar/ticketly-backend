@@ -36,7 +36,6 @@ const getTicketById = async (req, res) => {
     }
 };
 
-const { Ticket } = require('../models')
 
 const CreateTicket = async (req, res) => {
     const { title, description, department, priority } = req.body
