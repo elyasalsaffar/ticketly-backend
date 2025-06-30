@@ -15,7 +15,7 @@ router.get(
   '/tickets',
   middleware.stripToken,
   middleware.verifyToken,
-  TicketController.getUserTickets
+  controller.getUserTickets
 )
 
 // Get a specific ticket by ID for the user
@@ -23,7 +23,7 @@ router.get(
   '/tickets/:id',
   middleware.stripToken,
   middleware.verifyToken,
-  TicketController.getTicketById
+  controller.getTicketById
 )
 
 module.exports = router
