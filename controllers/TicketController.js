@@ -1,6 +1,7 @@
 const { Ticket } = require('../models')
 
 const CreateTicket = async (req, res) => {
+    console.log('Reached ticket route')
     const { title, description, department, priority } = req.body
 
     if ( !title ||  !description || !department || !priority) {
@@ -12,8 +13,8 @@ const CreateTicket = async (req, res) => {
             title,
             description,
             department,
-            periority,
-            user: req.userid
+            priority,
+            user: res.locals.payload.id
         })
 
         await newTicket.save()
