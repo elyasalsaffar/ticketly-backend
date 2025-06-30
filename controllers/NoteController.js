@@ -17,16 +17,26 @@ const CreateNote = async (req, res) => {
     }
 }
 
-    const getNotesByTicket = async (req, res) => {
-        try {
-            const notes = await Note.find({ ticket: req.params.ticket_id }).populate('user')
-            res.status(200).send(notes)
-        } catch (error) {
-            res.status(500).send({ message: 'Error fetching notes' })
-        }
+const getNotesByTicket = async (req, res) => {
+    try {
+        const notes = await Note.find({ ticket: req.params.ticket_id }).populate('user')
+        res.status(200).send(notes)
+    } catch (error) {
+        res.status(500).send({ message: 'Error fetching notes' })
     }
+}
+
+const getNotesByTicketId = async (req, res) => {
+  try {
+    const notes = await Note.find({ ticket: req.params.ticket_id }).populate('user')
+    res.status(200).send(notes)
+  } catch (error) {
+    res.status(500).send({ message: 'Error fetching notes' })
+  }
+}
 
 module.exports = {
     CreateNote,
-    getNotesByTicket
+    getNotesByTicket,
+    getNotesByTicketId
 }

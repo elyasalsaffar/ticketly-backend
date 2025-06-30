@@ -14,5 +14,11 @@ router.get(
     middleware.verifyToken,
     controller.getNotesByTicket
 )
+router.get(
+    '/:ticket_id',
+    middleware.stripToken,
+    middleware.verifyToken,
+    controller.getNotesByTicketId
+)
 
 module.exports = router

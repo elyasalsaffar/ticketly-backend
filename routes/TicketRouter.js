@@ -13,7 +13,7 @@ router.post(
 
     // Get all tickets for the user
 router.get(
-  '/tickets',
+  '/',
   middleware.stripToken,
   middleware.verifyToken,
   controller.getUserTickets
@@ -21,7 +21,7 @@ router.get(
 
 // Get a specific ticket by ID for the user
 router.get(
-  '/tickets/:id',
+  '/:id',
   middleware.stripToken,
   middleware.verifyToken,
   controller.getTicketById
