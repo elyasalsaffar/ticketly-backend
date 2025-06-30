@@ -1,9 +1,12 @@
 const express = require('express')
 const router = require('express').Router()
-const { CreateTicket } = require('../controllers/TicketController')
-const verifyToken = require('../middleware/verifyToken')
+const controller = require('../controllers/TicketController')
+const middleware = require('../middleware')
 
 
-router.post('/', verifyToken, CreateTicket)
+router.post(
+    '/',
+    middleware.verifyToken, 
+    controller.CreateTicket)
 
 module.exports = router
