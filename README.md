@@ -111,8 +111,6 @@ A full-stack web application built with the MERN stack (MongoDB, Express.js, Rea
 
 ### 🚀 Future Improvements
 
----
-
 - Enhance the admin user interface .
 - Send email notifications when a ticket is created or a reply is added .
 - Allow users to interact and add replies .
@@ -120,8 +118,6 @@ A full-stack web application built with the MERN stack (MongoDB, Express.js, Rea
 ---
 
 ### 👥 Team Members
-
----
 
 - Elyas Alsafar .
 - Aysha Zayed . 
