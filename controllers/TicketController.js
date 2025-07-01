@@ -18,7 +18,7 @@ const getTicketById = async (req, res) => {
     const userId = res.locals.payload.id
     const ticketId = req.params.id
 
-    const ticket = await Ticket.findOne({ _id: ticketId, user: userId })
+    const ticket = await Ticket.findOne({ _id: ticketId, user: userId }).populate('user')
 
     if (!ticket) {
       return res.status(404).json({ error: "No ticket found with this ID " })
